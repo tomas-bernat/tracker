@@ -1,0 +1,33 @@
+name: Sync Garmin Data
+on:
+  schedule:
+    - cron: '*/10 * * * *' # Runs every 10 minutes
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  get-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Fetch KML and Convert to JSON
+        run: |
+          # Download the KML
+          curl -L "https://share.garmin.com/feed/share/Expeditionclub" -o data.kml
+      
+          # Extract Lat/Lon using grep/sed (simple way without heavy tools)
+          LAT=$(grep -oP '(?<=<SimpleData name="Latitude">)[^<]+' data.kml)
+          LON=$(grep -oP '(?<=<SimpleData name="Longitude">)[^<]+' data.kml)
+          TIME=$(grep -oP '(?<=<SimpleData name="Timestamp">)[^<]+' data.kml)
+          
+          # Save as JSON
+          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME\"}" > data/location.json
+
+      - name: Commit and Push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add data/location.json
+          git commit -m "Update Garmin location" || exit 0
+          git push
