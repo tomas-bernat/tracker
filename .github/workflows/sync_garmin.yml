@@ -11,18 +11,20 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Fetch KML and Convert to JSON
+      - name: Fetch and Filter KML
         run: |
-          # Download the KML
-          curl -L "https://share.garmin.com/feed/share/Expeditionclub" -o data.kml
-      
-          # Extract Lat/Lon using grep/sed (simple way without heavy tools)
-          LAT=$(grep -oP '(?<=<SimpleData name="Latitude">)[^<]+' data.kml)
-          LON=$(grep -oP '(?<=<SimpleData name="Longitude">)[^<]+' data.kml)
-          TIME=$(grep -oP '(?<=<SimpleData name="Timestamp">)[^<]+' data.kml)
+          curl -L "https://share.garmin.com/feed/share/YOUR_GARMIN_USERNAME" -o data.kml
           
-          # Save as JSON
-          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME\"}" > data/location.json
+          # 1. Extract only the section for the specific folder
+          # This finds the line with your folder name and grabs everything until the next </Folder>
+          sed -n '/<name>Expe-5 inReach Mini II<\/name>/,/<\/Folder>/p' data.kml > folder_block.txt
+          
+          # 2. Extract Lat/Lon from THAT specific block
+          LAT=$(grep -A 1 'name="Latitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
+          LON=$(grep -A 1 'name="Longitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
+          
+          # 3. Save to JSON
+          echo "{\"lat\": $LAT, \"lon\": $LON}" > data/location.json
 
       - name: Commit and Push
         run: |
