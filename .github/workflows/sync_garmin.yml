@@ -13,7 +13,7 @@ jobs:
 
       - name: Fetch and Filter KML
         run: |
-          curl -L "https://share.garmin.com/feed/share/YOUR_GARMIN_USERNAME" -o data.kml
+          curl -L "https://share.garmin.com/feed/share/Expeditionclub" -o data.kml
           
           # 1. Extract only the section for the specific folder
           # This finds the line with your folder name and grabs everything until the next </Folder>
