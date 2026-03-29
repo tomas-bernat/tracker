@@ -24,7 +24,7 @@ jobs:
           LON=$(grep -A 1 'name="Longitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
           
           # 3. Save to JSON
-          echo "{\"lat\": $LAT, \"lon\": $LON}" > data/location.json
+          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME_UTC2\"}" > data/location.json
 
       - name: Commit and Push
         run: |
