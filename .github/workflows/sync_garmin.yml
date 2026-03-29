@@ -23,8 +23,12 @@ jobs:
           LAT=$(grep -A 1 'name="Latitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
           LON=$(grep -A 1 'name="Longitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
           
-          # 3. Save to JSON
-          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME_UTC2\"}" > data/location.json
+          # Set Timezone to Central Europe (Prague/Berlin/Paris) 
+          # This automatically handles UTC+2 (Summer) or UTC+1 (Winter)
+          TIME_LOCAL=$(TZ='Europe/Prague' date '+%Y-%m-%d %H:%M:%S')
+          
+          # 3. Create the JSON
+          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME_LOCAL\"}" > data/location.json
 
       - name: Commit and Push
         run: |
