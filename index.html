@@ -85,7 +85,7 @@
                 // Update the UI
                 const dateParsed = data.time ? new Date(data.time).toLocaleString() : "Recently";
                 document.getElementById('status').innerHTML = 
-                    `<b>Last Seen:</b> ${dateParsed}<br>` +
+                    `<b>Last Seen:</b> ${data.time}<br>` +
                     `<b>Latitude:</b> ${data.lat.toFixed(6)}<br>` +
                     `<b>Longitude:</b> ${data.lon.toFixed(6)}`;
             }
