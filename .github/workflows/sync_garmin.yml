@@ -22,6 +22,7 @@ jobs:
           # 2. Extract Lat/Lon from THAT specific block
           LAT=$(grep -A 1 'name="Latitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
           LON=$(grep -A 1 'name="Longitude"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
+          ELE=$(grep -A 1 'name="Elevation"' folder_block.txt | grep -oP '(?<=<value>)[^<]+')
           
           # Set Timezone to Central Europe (Prague/Berlin/Paris) 
           # This automatically handles UTC+2 (Summer) or UTC+1 (Winter)
