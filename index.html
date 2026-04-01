@@ -87,7 +87,9 @@
                 document.getElementById('status').innerHTML = 
                     `<b>Last Seen:</b> ${data.time}<br>` +
                     `<b>Latitude:</b> ${data.lat.toFixed(6)}<br>` +
-                    `<b>Longitude:</b> ${data.lon.toFixed(6)}`;
+                    `<b>Longitude:</b> ${data.lon.toFixed(6)}<br>` +
+                    `<b>Elevation:</b> ${data.ele}`;
+                    
             }
         } catch (err) {
             console.error("Error loading local JSON:", err);
