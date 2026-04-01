@@ -29,7 +29,7 @@ jobs:
           TIME_LOCAL=$(TZ='Europe/Prague' date '+%Y-%m-%d %H:%M:%S')
           
           # 3. Create the JSON
-          echo "{\"lat\": $LAT, \"lon\": $LON, \"time\": \"$TIME_LOCAL\"}" > data/location.json
+          echo "{\"lat\": $LAT, \"lon\": $LON, \"ele\": $ELE, \"time\": \"$TIME_LOCAL\"}" > data/location.json
 
       - name: Commit and Push
         run: |
